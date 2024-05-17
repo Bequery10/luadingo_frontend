@@ -9,13 +9,39 @@ function SettingsPage() {
     const location = useLocation();
     const user = location.state?.myVariable;
 
-    const handleUsernameChange = () => {
-        console.log('Change Username to:', newUsername);
+    const handleUsernameChange = (e) => {
+        e.preventDefault()
+        const updatedUser = { username:newUsername, password:user.password};
+        fetch(`http://localhost:8080/user/update/${user.username}`,{
+          method:"PUT",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify(updatedUser)
+    
+      }).then(()=>{
+        alert("username has successfully changed");
+        setTimeout(() => {
+            navigate('/');
+          }, 200);
+
+      })
     };
 
-    const handlePasswordChange = () => {
-        console.log('Change Password to:', newPassword);
+    const handlePasswordChange = (e) => {
+        e.preventDefault()
+        const updatedUser = { username: user.username, password:newPassword};
+        fetch(`http://localhost:8080/user/update/${user.username}`,{
+          method:"PUT",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify(updatedUser)
+    
+      }).then(()=>{
+        alert("password has successfully changed");
+        setTimeout(() => {
+            navigate('/');
+          }, 200);
+      })
     };
+    
 
     return (
         <Box sx={{ padding: 2 }}>

@@ -1,24 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 function QuizzesPage() {
     const location = useLocation();
     const user = location.state?.myVariable;
+    const course_id=location.state?.course_id;
     const navigate = useNavigate();
     const { state } = useLocation();
-    const sampleQuizzes = [
-        { id: 1, name: 'Basics Quiz', course: 'French for Beginners' },
-        { id: 2, name: 'Vocabulary Builder', course: 'Spanish Essentials' },
-        { id: 3, name: 'Grammar and Usage', course: 'German: Intermediate' },
-        { id: 4, name: 'Pronunciation Practice', course: 'Mandarin Chinese Basics' },
-        { id: 5, name: 'Useful Phrases', course: 'Japanese for Travel' },
-    ].filter(quiz => quiz.course === state.courseName);
+    const [quizzes, setquizzes] = useState([]);
+
+  async function fetchquizzes() {
+    try {
+      const response = await fetch(`http://localhost:8080/Quizzes/getAll`,{
+        method:"GET",
+        headers:{"Content-Type":"application/json"},
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const quizzes = await response.json();
+      return quizzes;
+    } catch (error) {
+      console.error('An error occurred while fetching the quizzes:', error);
+    }
+  }
+
+  useEffect(() => {
+    async function getquizzes() {
+      const fetchedquizzes = await fetchquizzes();
+      setquizzes(fetchedquizzes);
+    }
+
+    getquizzes();
+  }, []);
 
     return (
         <Box sx={{ padding: 2 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
-                <Button variant="contained" onClick={() => navigate(-1, { state: { myVariable: user } })}>Back</Button>
+                <Button variant="contained" onClick={() => navigate(-1)}>Back</Button>
                 <Typography variant="h5">{state.courseName} QUIZZES</Typography>
                 <div style={{ width: 48 }} />  {/* Placeholder for spacing */}
             </Box>
@@ -31,7 +53,7 @@ function QuizzesPage() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {sampleQuizzes.map((quiz) => (
+                        {quizzes.map((quiz) => (
                             <TableRow key={quiz.id}>
                                 <TableCell>{quiz.name}</TableCell>
                                 <TableCell align="right">

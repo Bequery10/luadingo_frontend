@@ -1,67 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 function CoursesPage() {
     const navigate = useNavigate();
-    const location = useLocation();
-    const user = location.state?.myVariable;
+  const location = useLocation();
+  const user = location.state?.myVariable;
+  const [courses, setCourses] = useState([]);
 
-    async function fetchCourses() {
-        try {
-          const response = await fetch(`http://localhost:8080/has_course/get/${user.username}`,{
-            method:"GET",
-            headers:{"Content-Type":"application/json"},
-            //body:JSON.stringify(username)
-          });
-      
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-      
-          const courses = await response.json();
-          return courses;
-        } catch (error) {
-          console.error('An error occurred while fetching the badges:', error);
-          return [];
-        }
+  async function fetchCourses() {
+    try {
+      const response = await fetch(`http://localhost:8080/Course/getAll`,{
+        method:"GET",
+        headers:{"Content-Type":"application/json"},
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
-      const courses = fetchCourses();
 
-      function fillCourses1(){
-        var Courses1 = [];
-        for(var i=0;i<courses.length;i++){
-            Courses1[i]={id:i+1, name: courses[i].name}
-        }
-        return Courses1;
+      const courses = await response.json();
+      return courses;
+    } catch (error) {
+      console.error('An error occurred while fetching the courses:', error);
     }
-    
-    const Courses1 = fillCourses1();
-    
-    // const Courses1 = [
-    //     { id: 1, name: 'French for Beginners' },
-    //     { id: 2, name: 'Spanish Essentials' },
-    //     { id: 3, name: 'German: Intermediate' },
-    //     { id: 4, name: 'Mandarin Chinese Basics' },
-    //     { id: 5, name: 'Japanese for Travel' },
-    //     { id: 6, name: 'French for Beginners' },
-    //     { id: 7, name: 'Spanish Essentials' },
-    //     { id: 8, name: 'German: Intermediate' },
-    //     { id: 9, name: 'Mandarin Chinese Basics' },
-    //     { id: 10, name: 'Japanese for Travel' },
-    //     { id: 11, name: 'French for Beginners' },
-    //     { id: 12, name: 'Spanish Essentials' },
-    //     { id: 13, name: 'German: Intermediate' },
-    //     { id: 14, name: 'Mandarin Chinese Basics' },
-    //     { id: 15, name: 'Japanese for Travel' },
-    //     { id: 16, name: 'French for Beginners' },
-    //     { id: 17, name: 'Spanish Essentials' },
-    //     { id: 18, name: 'German: Intermediate' },
-    //     { id: 19, name: 'Mandarin Chinese Basics' },
-    //     { id: 20, name: 'Japanese for Travel' }
+  }
 
-    // ];
+  useEffect(() => {
+    async function getCourses() {
+      const fetchedCourses = await fetchCourses();
+      setCourses(fetchedCourses);
+    }
+
+    getCourses();
+  }, []);
 
     return (
         <Box sx={{ padding: 2 }}>
@@ -79,11 +51,11 @@ function CoursesPage() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {Courses1.map((course) => (
-                        <TableRow key={course.id}>
-                            <TableCell>{course.name}</TableCell>
+                    {courses.map((course) => (
+                        <TableRow key={course.course_id}>
+                            <TableCell>{`${course.course_name}`}</TableCell>
                             <TableCell align="right">
-                                <Button variant="contained" onClick={() => navigate('/home', { state: { myVariable: user } })}>Select</Button>
+                                <Button variant="contained" onClick={() => navigate('/quizzes', { state: { myVariable: user, courseID:course.course_id } })}>Select</Button>
                             </TableCell>
                         </TableRow>
                     ))}

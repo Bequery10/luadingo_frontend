@@ -17,30 +17,21 @@ export default function LogInSignIn() {
     const navigate = useNavigate();
 
     const handleSignIn = async (event) => {
-        
-        const response = await fetch(`http://localhost:8080/user/${logInUsername}`,{
-          method:"GET",
-          headers:{"Content-Type":"application/json"},
-          //body:JSON.stringify(username)
-        });
-  
-        const user = await response.json();
-      
-        if(response.ok==false){
-          const user={username, email, password};
-          const response2 = await fetch(`http://localhost:8080/user/add`,{
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify(user),
+        event.preventDefault();
+        const user = { username, password, email };
+        try {
+          fetch("http://localhost:8080/user/add", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(user)
+          }).then(() => {
+            alert("you're signed up!");
+            setTimeout(() => {
+              navigate('/');
+            }, 200);
           });
-          alert("You are signed up!");
-
-          setTimeout(() => {
-               // navigate('/');
-            }, 1000);
-        }
-        else{
-          alert("username is already taken!");
+        } catch (e) {
+          alert("username already exist!");
         }
       };
 
