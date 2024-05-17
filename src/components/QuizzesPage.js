@@ -12,7 +12,7 @@ function QuizzesPage() {
 
   async function fetchquizzes() {
     try {
-      const response = await fetch(`http://localhost:8080/Quizzes/getByReference/${course_id}`,{
+      const response = await fetch(`http://localhost:8080/has_quiz/getByReference/${course_id}`,{
         method:"GET",
         headers:{"Content-Type":"application/json"},
       });
@@ -57,7 +57,7 @@ function QuizzesPage() {
                             <TableRow key={quiz.id}>
                                 <TableCell>{quiz.name}</TableCell>
                                 <TableCell align="right">
-                                    <Button variant="contained" onClick={() => navigate('/questions', { state: { quizName: quiz.name, courseName: quiz.course }})}>Select</Button>
+                                    <Button variant="contained" onClick={() => navigate('/questions', { state: { myVariable: user, quiz_id: quiz.id } })}>Select</Button>
                                 </TableCell>
                             </TableRow>
                         ))}
