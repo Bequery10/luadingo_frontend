@@ -6,7 +6,9 @@ function UserAccountPage() {
     const { state } = useLocation();
     const { userId } = state;
     // Fetch user details using userId or pass user details through state
-
+    const location = useLocation();
+    const user = location.state?.myVariable;
+    
     const handleDeleteUser = () => {
         console.log('Deleting user...');
         // Implement actual deletion logic

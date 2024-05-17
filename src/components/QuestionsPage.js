@@ -4,6 +4,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 function QuestionsPage() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const user = location.state?.myVariable;
     const { state } = useLocation();
     const sampleQuestion = {
         courseName: state.courseName,

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Box, TextField, Typography, Paper } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // Ensure this is correctly imported
+import { useNavigate , useLocation} from 'react-router-dom'; // Ensure this is correctly imported
 
 function RunSqlCommandsPage() {
+    const location = useLocation();
+    const user = location.state?.myVariable;
     const navigate = useNavigate(); // Correct use of useNavigate
     const [sqlCommand, setSqlCommand] = useState('');
     const [results, setResults] = useState('');

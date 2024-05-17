@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, Modal } from '@mui/material';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 
 function FriendsPage() {
     const navigate = useNavigate();
@@ -18,17 +18,6 @@ function FriendsPage() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const handleRemove = (username) => {
-        // Add your remove friend logic here
-        console.log(`Remove friend: ${username}`);
-    };
-    const handleAccept = (username) => {
-   
-    };
-    const handleReject = (username) => {
-   
-    };
-
 
     return (
         <Box sx={{ padding: 2 }}>
@@ -42,19 +31,7 @@ function FriendsPage() {
                     aria-labelledby="friend-requests-modal-title"
                     aria-describedby="friend-requests-modal-description"
                 >
-                    {/* You can add your friend requests list here */}
-                    <Box sx={{ padding: 2 }}>
-    <Typography variant="h6">Friend Requests:</Typography>
-    {sampleFriendsData.map((request, index) => (
-        <Box key={index} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 1 }}>
-            <Typography>{request.username}</Typography>
-            <Box>
-                <Button variant="contained" onClick={() => handleAccept(request.username)}>Accept</Button>
-                <Button variant="contained" onClick={() => handleReject(request.username)}>Reject</Button>
-            </Box>
-        </Box>
-    ))}
-</Box>
+     
                 </Modal>
                 <Button variant="contained" onClick={() => navigate('/home')}>Home</Button>
             </Box>
@@ -65,7 +42,6 @@ function FriendsPage() {
                             <TableCell>Username</TableCell>
                             <TableCell>Score</TableCell>
                             <TableCell>See Profile</TableCell>
-                            <TableCell>Remove</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -74,15 +50,11 @@ function FriendsPage() {
                                 <TableCell>{friend.username}</TableCell>
                                 <TableCell>{friend.score}</TableCell>
                                 <TableCell>
-                                    <Button variant="contained" onClick={() => navigate(`/friendsAccounts`, { state: { myVariable: friend.username } })}>
+                                    <Button variant="contained" onClick={() => navigate(`/user/${friend.username}`)}>
                                         See Profile
                                     </Button>
                                 </TableCell>
-                                <TableCell>
-                                    <Button variant="contained" onClick={() => handleRemove(friend.username)}>
-                                        Remove
-                                    </Button>
-                                </TableCell>
+                            
                             </TableRow>
                         ))}
                     </TableBody>

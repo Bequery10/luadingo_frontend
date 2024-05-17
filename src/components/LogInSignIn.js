@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import { useNavigate } from 'react-router-dom';
+import { Route, Navigate ,useNavigate } from 'react-router-dom';
 
 export default function LogInSignIn() {
     const [username, setUsername] = useState('');
@@ -16,16 +16,62 @@ export default function LogInSignIn() {
     const [logInPassword, setLogInPassword] = useState('');
     const navigate = useNavigate();
 
-    const handleSignIn = (event) => {
-        event.preventDefault();
-        console.log('Sign Up:', username, email, password);
-        navigate('/');
-    };
+    const handleSignIn = async (event) => {
+        const response = await fetch(`http://localhost:8080/user/${logInUsername}`,{
+          method:"GET",
+          headers:{"Content-Type":"application/json"},
+          //body:JSON.stringify(username)
+        });
+        
+        const user = await response.json();
+      
+        if(user==null){
+          event.preventDefault();
+          const user={username, email, password};
+          const response2 = await fetch(`http://localhost:8080/user/save`,{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify(user),
+          });
+          alert("You are signed up!");
+          navigate('/');
+        }
+        else{
+          alert("username is already taken!");
+        }
+      };
 
-    const handleLogIn = (event) => {
+    const handleLogIn = async (event) => {
         event.preventDefault();
-        console.log('Log In:', logInUsername, logInPassword);
-        navigate('/');
+        const response = await fetch(`http://localhost:8080/user/isExist/${logInUsername}:${logInPassword}`,{
+          method:"GET",
+          headers:{"Content-Type":"application/json"},
+          //body:JSON.stringify(username)
+        });
+    
+        const reponse = await response.json();
+
+        console.log(reponse);
+        if(reponse){
+            // Display a message
+            alert('You have successfully logged in!');
+      
+            // Wait for 3 seconds before navigating
+            const response1 = await fetch(`http://localhost:8080/user/${logInUsername}`,{
+                method:"GET",
+                headers:{"Content-Type":"application/json"},
+                //body:JSON.stringify(username)
+              });
+              
+              const user = await response1.json();
+
+            setTimeout(() => {
+                navigate('/home', { state: { myVariable: user } });
+            }, 1300);
+        }
+    else{
+        alert('wrong username or password');
+    }
     };
 
     return (

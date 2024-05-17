@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route , Navigate ,useNavigate } from 'react-router-dom';
 
 // Make sure all these imports are correct and that these files exist in your project under the specified paths
 import AdminPage from './components/AdminPage';
@@ -15,18 +15,23 @@ import SettingsPage from './components/SettingsPage';
 import CoursesPage from './components/CoursesPage';
 import QuizzesPage from './components/QuizzesPage';
 import QuestionsPage from './components/QuestionsPage';
+import FriendsForFriends from './components/FriendsForFriends';
+import FriendsAccountsPage from './components/FriendsAccountsPage';
+
 
 function App() {
   return (
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<AdminPage />} />
-          <Route path="/login" element={<LogInSignIn />} />
+          <Route path="/" element={<LogInSignIn />} />
+          <Route path="/admin" element={<AdminPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/leaderboard" element={<LeaderboardPage />} />
           <Route path="/user/:username" element={<UserProfile />} />
           <Route path="/friends" element={<FriendsPage />} />
+          <Route path="/friendsAccounts" element={<FriendsAccountsPage />} />
+          <Route path="/friendsForFriends" element={<FriendsForFriends />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/courses" element={<CoursesPage />} />
           <Route path="/quizzes" element={<QuizzesPage />} />

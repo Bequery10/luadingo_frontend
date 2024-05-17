@@ -1,9 +1,11 @@
 import React from 'react';
 import { Button, Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function UserListPage() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const user = location.state?.myVariable;
     const sampleUsers = [
         { id: 1, username: 'UserOne', score: 100 },
         { id: 2, username: 'UserTwo', score: 200 },

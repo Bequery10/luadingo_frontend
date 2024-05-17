@@ -3,6 +3,8 @@ import { Button, Box, Typography, TableContainer, Table, TableHead, TableRow, Ta
 import { useNavigate, useLocation } from 'react-router-dom';
 
 function QuizzesPage() {
+    const location = useLocation();
+    const user = location.state?.myVariable;
     const navigate = useNavigate();
     const { state } = useLocation();
     const sampleQuizzes = [
@@ -16,7 +18,7 @@ function QuizzesPage() {
     return (
         <Box sx={{ padding: 2 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
-                <Button variant="contained" onClick={() => navigate(-1)}>Back</Button>
+                <Button variant="contained" onClick={() => navigate(-1, { state: { myVariable: user } })}>Back</Button>
                 <Typography variant="h5">{state.courseName} QUIZZES</Typography>
                 <div style={{ width: 48 }} />  {/* Placeholder for spacing */}
             </Box>

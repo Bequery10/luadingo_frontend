@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Box, Typography, TextField } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function SettingsPage() {
     const [newUsername, setNewUsername] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const navigate = useNavigate();
+    const location = useLocation();
+    const user = location.state?.myVariable;
 
     const handleUsernameChange = () => {
         console.log('Change Username to:', newUsername);
