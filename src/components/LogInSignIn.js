@@ -17,24 +17,27 @@ export default function LogInSignIn() {
     const navigate = useNavigate();
 
     const handleSignIn = async (event) => {
+        
         const response = await fetch(`http://localhost:8080/user/${logInUsername}`,{
           method:"GET",
           headers:{"Content-Type":"application/json"},
           //body:JSON.stringify(username)
         });
-        
+  
         const user = await response.json();
       
-        if(user==null){
-          event.preventDefault();
+        if(response.ok==false){
           const user={username, email, password};
-          const response2 = await fetch(`http://localhost:8080/user/save`,{
+          const response2 = await fetch(`http://localhost:8080/user/add`,{
             method:"POST",
             headers:{"Content-Type":"application/json"},
             body:JSON.stringify(user),
           });
           alert("You are signed up!");
-          navigate('/');
+
+          setTimeout(() => {
+               // navigate('/');
+            }, 1000);
         }
         else{
           alert("username is already taken!");
@@ -67,7 +70,7 @@ export default function LogInSignIn() {
 
             setTimeout(() => {
                 navigate('/home', { state: { myVariable: user } });
-            }, 1300);
+            }, 1000);
         }
     else{
         alert('wrong username or password');
