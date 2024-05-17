@@ -12,7 +12,7 @@ function QuizzesPage() {
 
   async function fetchquizzes() {
     try {
-      const response = await fetch(`http://localhost:8080/Quizzes/getAll`,{
+      const response = await fetch(`http://localhost:8080/Quizzes/getByReference/${course_id}`,{
         method:"GET",
         headers:{"Content-Type":"application/json"},
       });
