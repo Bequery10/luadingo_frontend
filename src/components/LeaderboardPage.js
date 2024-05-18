@@ -55,7 +55,7 @@ function LeaderboardPage() {
                                 <TableCell>{row.username}</TableCell>
                                 <TableCell>{row.score}</TableCell>
                                 <TableCell>
-                                    <Button onClick={() => navigate(`/user/${row.username}`, { state: { myVariable: row.username } })}>See Profile</Button>
+                                    <Button onClick={() => navigate(`/friendsAccounts`, { state: { myVariable: {username:row.username,level:row.score} } })}>See Profile</Button>
                                 </TableCell>
                             </TableRow>
                         ))}

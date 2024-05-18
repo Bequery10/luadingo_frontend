@@ -11,7 +11,7 @@ function HomePage() {
     const handleLogout = () => {
         // Here you might also handle clearing any stored authentication tokens or user data
         console.log('Logging out...');
-        navigate('/'); // Navigate to the login page after logout
+        navigate('/', { replace: true });
     };
 
     return (
