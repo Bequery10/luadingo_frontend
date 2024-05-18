@@ -1,35 +1,56 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material';
+import { Button, Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, CircularProgress } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 function LeaderboardPage() {
     const navigate = useNavigate();
     const location = useLocation();
     const user = location.state?.myVariable;
-    const [sampleData, setSampleData] = useState([]);
+    const [leaderboardData, setLeaderboardData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        // Simulate fetching data
-        setTimeout(() => {
-            try {
-                setSampleData([
-                    { index: 1, username: 'UserOne', score: 300 },
-                    { index: 2, username: 'UserTwo', score: 250 },
-                    { index: 3, username: 'UserThree', score: 200 },
-                    // Add more sample data as needed
-                ]);
-                setLoading(false);
-            } catch (err) {
-                setError(err.message);
-                setLoading(false);
+    async function fetchLeaderboard() {
+        try {
+            const response = await fetch('http://localhost:8080/leaderboard', {
+                method: "GET",
+                headers: {"Content-Type": "application/json"},
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        }, 1000);
+
+            const data = await response.json();
+            setLeaderboardData(data);
+        } catch (error) {
+            console.error('An error occurred while fetching the leaderboard:', error);
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchLeaderboard();
     }, []);
 
-    if (loading) return <Typography>Loading...</Typography>;
-    if (error) return <Typography>Error: {error}</Typography>;
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
+
+    if (error) {
+        return (
+            <Box sx={{ padding: 2, textAlign: 'center' }}>
+                <Typography variant="h6" color="error">Failed to load leaderboard: {error}</Typography>
+                <Button variant="contained" onClick={() => navigate('/home', { state: { myVariable: user } })}>Home</Button>
+            </Box>
+        );
+    }
 
     return (
         <Box sx={{ padding: 2 }}>
@@ -49,13 +70,13 @@ function LeaderboardPage() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {sampleData.map((row) => (
-                            <TableRow key={row.index}>
-                                <TableCell component="th" scope="row">{row.index}</TableCell>
+                        {leaderboardData.map((row, index) => (
+                            <TableRow key={index}>
+                                <TableCell component="th" scope="row">{index + 1}</TableCell>
                                 <TableCell>{row.username}</TableCell>
                                 <TableCell>{row.score}</TableCell>
                                 <TableCell>
-                                    <Button onClick={() => navigate(`/friendsAccounts`, { state: { myVariable: {username:row.username,level:row.score} } })}>See Profile</Button>
+                                    <Button onClick={() => navigate(`/friendsAccounts`, { state: { myVariable: {username: row.username, score: row.score} } })}>See Profile</Button>
                                 </TableCell>
                             </TableRow>
                         ))}
