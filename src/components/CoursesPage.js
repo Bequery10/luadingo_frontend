@@ -1,68 +1,65 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function CoursesPage() {
     const navigate = useNavigate();
-  const location = useLocation();
-  const user = location.state?.myVariable;
-  const [courses, setCourses] = useState([]);
+    const [courses, setCourses] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
-  async function fetchCourses() {
-    try {
-      const response = await fetch(`http://localhost:8080/Course/getAll`,{
-        method:"GET",
-        headers:{"Content-Type":"application/json"},
-      });
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/Course/getAll', {
+                    method: "GET",
+                    headers: {"Content-Type": "application/json"},
+                });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+                if (!response.ok) {
+                    throw new Error('Failed to fetch courses');
+                }
 
-      const courses = await response.json();
-      return courses;
-    } catch (error) {
-      console.error('An error occurred while fetching the courses:', error);
-    }
-  }
+                const courses = await response.json();
+                setCourses(courses);
+            } catch (error) {
+                console.error('An error occurred while fetching the courses:', error);
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-  useEffect(() => {
-    async function getCourses() {
-      const fetchedCourses = await fetchCourses();
-      setCourses(fetchedCourses);
-    }
+        fetchCourses();
+    }, []);
 
-    getCourses();
-  }, []);
+    if (loading) return <Typography>Loading...</Typography>;
+    if (error) return <Typography>Error: {error}</Typography>;
 
     return (
         <Box sx={{ padding: 2 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
-            <Button variant="contained" onClick={() => navigate('/home', { state: { myVariable: user } })}>Back</Button>
-            <Typography variant="h5">LANGUAGE COURSES</Typography>
-            <div style={{ width: 48 }} />  {/* Placeholder for spacing */}
-        </Box>
-        <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
-            <Table stickyHeader aria-label="courses table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Course Name</TableCell>
-                        <TableCell align="right">Select</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {courses.map((course) => (
-                        <TableRow key={course.course_id}>
-                            <TableCell>{`${course.course_name}`}</TableCell>
-                            <TableCell align="right">
-                                <Button variant="contained" onClick={() => navigate('/quizzes', { state: { myVariable: user, courseID:course.course_id } })}>Select</Button>
-                            </TableCell>
+            <Typography variant='h4' sx={{ marginBottom: 2 }}>Courses</Typography>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Course Name</TableCell>
+                            <TableCell align='right'>Action</TableCell>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    </Box>
+                    </TableHead>
+                    <TableBody>
+                        {courses.map((course) => (
+                            <TableRow key={course.course_id}>
+                                <TableCell>{course.course_name}</TableCell>
+                                <TableCell align='right'>
+                                    <Button variant='contained' onClick={() => navigate('/quizzes', { state: { courseID: course.course_id } })}>View Quizzes</Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Box>
     );
 }
 
