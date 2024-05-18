@@ -1,68 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Box, Typography, Paper, CircularProgress } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
+import React from 'react';
+import { Button, Box, Typography, Paper } from '@mui/material';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-function FriendsAccountsPage() {
+function UserProfile() {
     const navigate = useNavigate();
-    const { username } = useParams();
-    const [friend, setFriend] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        async function fetchFriendDetails() {
-            try {
-                const response = await fetch(`http://localhost:8080/user/${username}`, {
-                    method: "GET",
-                    headers: {"Content-Type": "application/json"},
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const friendData = await response.json();
-                setFriend(friendData);
-            } catch (error) {
-                console.error('An error occurred while fetching the friend details:', error);
-                setError(error.message);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        fetchFriendDetails();
-    }, [username]);
-
-    if (loading) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <CircularProgress />
-            </Box>
-        );
-    }
-
-    if (error) {
-        return (
-            <Box sx={{ padding: 2, textAlign: 'center' }}>
-                <Typography variant="h6" color="error">Failed to load friend details: {error}</Typography>
-                <Button variant="contained" onClick={() => navigate(-1)}>Back</Button>
-            </Box>
-        );
-    }
+    const location = useLocation();
+    const user = location.state?.myVariable;
+    const sampleUserData = {
+        username: user.username,
+        level: user.level,
+        badges: ['Gold', 'Silver', 'Bronze' ] // Example badges
+    };
 
     return (
         <Box sx={{ padding: 2 }}>
-            <Button variant="contained" onClick={() => navigate(-1)}>Back</Button>
-            <Typography variant="h5">Friend's Profile</Typography>
-            <Paper elevation={2} sx={{ padding: 2, marginBottom: 2 }}>
-                <Typography variant="h6">{`Username: ${friend.username}`}</Typography>
-                <Typography variant="h6">{`Score: ${friend.score}`}</Typography>
-                <Typography variant="h6">{`Email: ${friend.email}`}</Typography>
-                {/* Add more friend details as needed */}
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+                <Button variant="contained" onClick={() => navigate(-1)}>Back</Button>
+                <Typography variant="h5">USER PROFILE</Typography>
+                <Button variant="contained" onClick={() => navigate('/home',)}>Home</Button>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+                <Typography variant="h6">{`Username: ${user.username}`}</Typography>
+                {/* <Button variant="contained" onClick={() => navigate('/friendsForFriends', { state: { myVariable: sampleUserData.username } })}>Friends</Button> */}
+            </Box> 
+            <Typography variant="h6" sx={{ marginBottom: 2 }}>{`level: ${sampleUserData.level}`}</Typography>
+            <Typography variant="h6">Badges:</Typography>
+            <Paper variant="outlined" sx={{ padding: 2, display: 'flex', justifyContent: 'space-around' }}>
+                {sampleUserData.badges.map(badge => (
+                    <Typography key={badge}>{badge}</Typography>
+                ))}
             </Paper>
         </Box>
     );
 }
 
-export default FriendsAccountsPage;
+export default UserProfile;

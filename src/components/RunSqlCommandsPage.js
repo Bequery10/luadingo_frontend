@@ -1,39 +1,19 @@
 import React, { useState } from 'react';
-import { Button, Box, TextField, Typography, Paper, Snackbar } from '@mui/material';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Button, Box, TextField, Typography, Paper } from '@mui/material';
+import { useNavigate , useLocation} from 'react-router-dom'; // Ensure this is correctly imported
 
 function RunSqlCommandsPage() {
-    const navigate = useNavigate();
+    const location = useLocation();
+    const user = location.state?.myVariable;
+    const navigate = useNavigate(); // Correct use of useNavigate
     const [sqlCommand, setSqlCommand] = useState('');
     const [results, setResults] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
 
-    // Function to handle running SQL commands via an API
-    const handleRunSqlCommand = async () => {
+    // Simulate running an SQL command
+    const handleRunSqlCommand = () => {
         console.log('Running SQL Command:', sqlCommand);
-        setIsLoading(true);
-        try {
-            const response = await fetch('http://localhost:8080/run-sql', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ sqlCommand })
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            setResults(data.result); // Assuming the backend sends back a 'result' key with the SQL execution result
-        } catch (error) {
-            console.error('Failed to run SQL command:', error);
-            setSnackbarMessage(`Failed to execute command: ${error.message}`);
-        } finally {
-            setIsLoading(false);
-        }
+        // Simulate result; replace this with your actual API call
+        setResults(`Results of: ${sqlCommand}`);
     };
 
     return (
@@ -47,14 +27,12 @@ function RunSqlCommandsPage() {
                 <TextField
                     fullWidth
                     multiline
-                    rows={4}
                     placeholder="Enter SQL command here"
                     value={sqlCommand}
                     onChange={(e) => setSqlCommand(e.target.value)}
                     variant="outlined"
-                    disabled={isLoading}
                 />
-                <Button variant="contained" sx={{ marginTop: 2 }} onClick={handleRunSqlCommand} disabled={isLoading}>
+                <Button variant="contained" sx={{ marginTop: 2 }} onClick={handleRunSqlCommand}>
                     Execute
                 </Button>
             </Paper>
@@ -63,7 +41,6 @@ function RunSqlCommandsPage() {
                 <TextField
                     fullWidth
                     multiline
-                    rows={6}
                     value={results}
                     InputProps={{
                         readOnly: true,
@@ -72,12 +49,6 @@ function RunSqlCommandsPage() {
                     placeholder="Results will appear here"
                 />
             </Paper>
-            <Snackbar
-                open={!!snackbarMessage}
-                autoHideDuration={6000}
-                onClose={() => setSnackbarMessage('')}
-                message={snackbarMessage}
-            />
         </Box>
     );
 }
