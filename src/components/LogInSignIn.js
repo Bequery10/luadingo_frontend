@@ -48,7 +48,7 @@ export default function LogInSignIn() {
         console.log(reponse);
         if(reponse==1){
             // Display a message
-            alert('You have successfully logged in!');
+            alert('You have successfully logged in, Admin!');
       
             // Wait for 3 seconds before navigating
             const response1 = await fetch(`http://localhost:8080/user/${logInUsername}`,{
