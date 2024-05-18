@@ -5,32 +5,47 @@ import { useNavigate, useLocation } from 'react-router-dom';
 function LeaderboardPage() {
     const navigate = useNavigate();
     const location = useLocation();
-    const user = location.state?.myVariable;
-    const [sampleData, setSampleData] = useState([]);
+    const user = location.state?.user;
+    const [users1, setusers1] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+
+    async function fetchusers1() {
+        try {
+          const response = await fetch(`http://localhost:8080/user/sort/badge`,{
+            method:"GET",
+            headers:{"Content-Type":"application/json"},
+          });
+      
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+      
+          const users1 = await response.json();
+          return users1;
+        } catch (error) {
+          console.error('An error occurred while fetching the users1:', error);
+          return []; // return an empty array when an error occurs
+        }
+      }
+  
     useEffect(() => {
-        // Simulate fetching data
-        setTimeout(() => {
-            try {
-                setSampleData([
-                    { index: 1, username: 'UserOne', score: 300 },
-                    { index: 2, username: 'UserTwo', score: 250 },
-                    { index: 3, username: 'UserThree', score: 200 },
-                    // Add more sample data as needed
-                ]);
-                setLoading(false);
-            } catch (err) {
-                setError(err.message);
-                setLoading(false);
-            }
-        }, 1000);
+      async function getusers1() {
+        const fetchedusers1 = await fetchusers1();
+        setusers1(fetchedusers1);
+      }
+  
+      getusers1();
     }, []);
 
-    if (loading) return <Typography>Loading...</Typography>;
-    if (error) return <Typography>Error: {error}</Typography>;
+    // const usersWithIndices = users1.map((user, index) => {
+    //     return { index, ...user };
+    //   });
 
+    //if (loading) return <Typography>Loading...</Typography>;
+    if (error) return <Typography>Error: {error}</Typography>;
+    let count=0;
     return (
         <Box sx={{ padding: 2 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
@@ -42,20 +57,20 @@ function LeaderboardPage() {
                 <Table stickyHeader aria-label="leaderboard table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Index</TableCell>
+                            <TableCell>Rank</TableCell>
                             <TableCell>User Name</TableCell>
                             <TableCell>Score</TableCell>
                             <TableCell>See Profile</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {sampleData.map((row) => (
-                            <TableRow key={row.index}>
-                                <TableCell component="th" scope="row">{row.index}</TableCell>
+                        {users1 && users1.map((row,index) => (
+                            <TableRow key={index}>
+                                <TableCell component="th" scope="row">{index+1}</TableCell>
                                 <TableCell>{row.username}</TableCell>
-                                <TableCell>{row.score}</TableCell>
+                                <TableCell>{row.level}</TableCell>
                                 <TableCell>
-                                    <Button onClick={() => navigate(`/friendsAccounts`, { state: { myVariable: {username:row.username,level:row.score} } })}>See Profile</Button>
+                                    <Button onClick={() => navigate(`/friendsAccounts`, { state: { user: row} })}>See Profile</Button>
                                 </TableCell>
                             </TableRow>
                         ))}

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 
 function FriendsPage() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const user = location.state?.user;
     const [friends, setFriends] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -11,7 +13,7 @@ function FriendsPage() {
     useEffect(() => {
         const fetchFriends = async () => {
             try {
-                const response = await fetch('http://localhost:8080/friends', {
+                const response = await fetch(`http://localhost:8080/Friends_With/friends/${user.username}`, {
                     method: "GET",
                     headers: {"Content-Type": "application/json"},
                 });
@@ -51,7 +53,7 @@ function FriendsPage() {
                             <TableRow key={friend.username}>
                                 <TableCell>{friend.username}</TableCell>
                                 <TableCell align="right">
-                                    <Button variant="contained" onClick={() => navigate(`/user/${friend.username}`)}>View Profile</Button>
+                                    <Button variant="contained" onClick={() => navigate(`/user/${friend.username}`, { state: { user: friend } })}>View Profile</Button>
                                 </TableCell>
                             </TableRow>
                         ))}
