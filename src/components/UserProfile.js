@@ -36,13 +36,13 @@ function UserProfile() {
         }
     }, [userId]);
 
-    // if (!user) {
-    //     return (
-    //         <Box sx={{ padding: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-    //             <Typography variant="h6">User data is unavailable. Please go back and try again.</Typography>
-    //         </Box>
-    //     );
-    // }
+    if (!user) {
+        return (
+            <Box sx={{ padding: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <Typography variant="h6">User data is unavailable. Please go back and try again.</Typography>
+            </Box>
+        );
+    }
 
     return (
         <Box sx={{ padding: 2 }}>
