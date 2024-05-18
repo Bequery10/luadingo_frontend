@@ -46,7 +46,7 @@ export default function LogInSignIn() {
         const reponse = await response.json();
 
         console.log(reponse);
-        if(reponse){
+        if(reponse==1){
             // Display a message
             alert('You have successfully logged in!');
       
@@ -63,8 +63,25 @@ export default function LogInSignIn() {
                 navigate('/home', { state: { myVariable: user } });
             }, 1000);
         }
+    else  if(reponse==2){
+        // Display a message
+        alert('You have successfully logged in!');
+  
+        // Wait for 3 seconds before navigating
+        const response1 = await fetch(`http://localhost:8080/user/${logInUsername}`,{
+            method:"GET",
+            headers:{"Content-Type":"application/json"},
+            //body:JSON.stringify(username)
+          });
+          
+          const user = await response1.json();
+
+        setTimeout(() => {
+            navigate('/adminPage', { state: { myVariable: user } });
+        }, 1000);
+    }
     else{
-        alert('wrong username or password');
+        alert('Wrong username or password!');
     }
     };
 
