@@ -6,35 +6,41 @@ function FriendsPage() {
     const navigate = useNavigate();
     const location = useLocation();
     const user = location.state?.user;
-    const [friends, setFriends] = useState([]);
+   
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-    useEffect(() => {
-        const fetchFriends = async () => {
-            try {
-                const response = await fetch(`http://localhost:8080/Friends_With/friends/${user.username}`, {
-                    method: "GET",
-                    headers: {"Content-Type": "application/json"},
-                });
+  
+ const [friends, setfriends] = useState([]);
 
-                if (!response.ok) {
-                    throw new Error('Failed to fetch friends');
-                }
+ async function fetchfriends() {
+   try {
+     const response = await fetch(`http://localhost:8080/Friends_With/friends/${user.username}`,{
+       method:"GET",
+       headers:{"Content-Type":"application/json"},
+     });
 
-                const friendsData = await response.json();
-                setFriends(friendsData);
-                setLoading(false);
-            } catch (error) {
-                setError(error.message);
-                setLoading(false);
-            }
-        };
+     if (!response.ok) {
+       throw new Error(`HTTP error! status: ${response.status}`);
+     }
 
-        fetchFriends();
-    }, []);
+     const friends = await response.json();
+     return friends;
+   } catch (error) {
+     console.error('An error occurred while fetching the friends:', error);
+   }
+ }
 
-    if (loading) return <Typography>Loading...</Typography>;
+ useEffect(() => {
+   async function getfriends() {
+     const fetchedfriends = await fetchfriends();
+     setfriends(fetchedfriends);
+   }
+
+   getfriends();
+ }, []);
+
+   // if (loading) return <Typography>Loading...</Typography>;
     if (error) return <Typography>Error: {error}</Typography>;
 
     return (
