@@ -9,6 +9,7 @@ function QuizzesPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+<<<<<<< HEAD
     useEffect(() => {
         const fetchQuizzes = async () => {
             try {
@@ -16,6 +17,14 @@ function QuizzesPage() {
                     method: "GET",
                     headers: {"Content-Type": "application/json"},
                 });
+=======
+  async function fetchquizzes() {
+    try {
+      const response = await fetch(`http://localhost:8080/Quizzes/getByReference/${course_id}`,{
+        method:"GET",
+        headers:{"Content-Type":"application/json"},
+      });
+>>>>>>> parent of 3af93cb (Update QuizzesPage.js)
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch quizzes');
@@ -50,10 +59,17 @@ function QuizzesPage() {
                     </TableHead>
                     <TableBody>
                         {quizzes.map((quiz) => (
+<<<<<<< HEAD
                             <TableRow key={quiz.quiz_id}>
                                 <TableCell>{quiz.quiz_title}</TableCell>
                                 <TableCell align='right'>
                                     <Button variant='contained' onClick={() => navigate('/questions', { state: { quiz_id: quiz.quiz_id } })}>Start Quiz</Button>
+=======
+                            <TableRow key={quiz.id}>
+                                <TableCell>{quiz.name}</TableCell>
+                                <TableCell align="right">
+                                    <Button variant="contained" onClick={() => navigate('/questions', { state: { quizName: quiz.name, courseName: quiz.course }})}>Select</Button>
+>>>>>>> parent of 3af93cb (Update QuizzesPage.js)
                                 </TableCell>
                             </TableRow>
                         ))}
