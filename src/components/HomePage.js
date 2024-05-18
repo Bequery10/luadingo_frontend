@@ -6,7 +6,7 @@ import { useNavigate ,useLocation} from 'react-router-dom';
 function HomePage() {
     const navigate = useNavigate();
     const location = useLocation();
-    const user = location.state?.myVariable;
+    const user = location.state?.user;
     // Function to handle user logout
     const handleLogout = () => {
         // Here you might also handle clearing any stored authentication tokens or user data
@@ -21,14 +21,14 @@ function HomePage() {
                 {/* Left Section for Play and Leader Board */}
                 <Box sx={{ width: '48%', textAlign: 'center' }}>
                     <Button variant="contained" sx={{ width: '90%', marginBottom: 2 }} onClick={() =>  navigate('/courses', { state: { myVariable: user } })}>Play</Button>
-                    <Button variant="contained" sx={{ width: '90%' }} onClick={() =>  navigate('/leaderBoard', { state: { myVariable: user } })}>Leader Board</Button>
+                    <Button variant="contained" sx={{ width: '90%' }} onClick={() =>  navigate('/leaderBoard', { state: { user: user } })}>Leader Board</Button>
                 </Box>
 
                 {/* Right Section for Logout, Profile, Settings */}
                 <Box sx={{ width: '48%', textAlign: 'center' }}>
                     <Button variant="contained" sx={{ width: '90%', marginBottom: 2 }} onClick={handleLogout}>Logout</Button>
                     <Button variant="contained" sx={{ width: '90%', marginBottom: 2 }} onClick={() =>  navigate(`/user/${user.username}`, { state: { myVariable: user } })}>Profile</Button>
-                    <Button variant="contained" sx={{ width: '90%' }} onClick={() =>  navigate('/settings', { state: { myVariable: user } })}>Settings</Button>
+                    <Button variant="contained" sx={{ width: '90%' }} onClick={() =>  navigate('/settings', { state: { user: user } })}>Settings</Button>
                 </Box>
             </Box>
         </Box>

@@ -46,7 +46,7 @@ export default function LogInSignIn() {
         const reponse = await response.json();
 
         console.log(reponse);
-        if(reponse==1){
+        if(reponse==2){
             // Display a message
             alert('You have successfully logged in, Admin!');
       
@@ -60,10 +60,10 @@ export default function LogInSignIn() {
               const user = await response1.json();
 
             setTimeout(() => {
-                navigate('/home', { state: { myVariable: user } });
+                navigate('/admin', { state: { myVariable: user } });
             }, 1000);
         }
-    else  if(reponse==2){
+    else  if(reponse==1){
         // Display a message
         alert('You have successfully logged in!');
   
@@ -77,7 +77,7 @@ export default function LogInSignIn() {
           const user = await response1.json();
 
         setTimeout(() => {
-            navigate('/adminPage', { state: { myVariable: user } });
+            navigate('/home', { state: { myVariable: user } });
         }, 1000);
     }
     else{
