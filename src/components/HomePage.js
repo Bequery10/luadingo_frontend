@@ -20,14 +20,14 @@ function HomePage() {
             <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
                 {/* Left Section for Play and Leader Board */}
                 <Box sx={{ width: '48%', textAlign: 'center' }}>
-                    <Button variant="contained" sx={{ width: '90%', marginBottom: 2 }} onClick={() =>  navigate('/courses', { state: { myVariable: user } })}>Play</Button>
+                    <Button variant="contained" sx={{ width: '90%', marginBottom: 2 }} onClick={() =>  navigate('/courses', { state: { user: user } })}>Play</Button>
                     <Button variant="contained" sx={{ width: '90%' }} onClick={() =>  navigate('/leaderBoard', { state: { user: user } })}>Leader Board</Button>
                 </Box>
 
                 {/* Right Section for Logout, Profile, Settings */}
                 <Box sx={{ width: '48%', textAlign: 'center' }}>
                     <Button variant="contained" sx={{ width: '90%', marginBottom: 2 }} onClick={handleLogout}>Logout</Button>
-                    <Button variant="contained" sx={{ width: '90%', marginBottom: 2 }} onClick={() =>  navigate(`/user/${user.username}`, { state: { myVariable: user } })}>Profile</Button>
+                    <Button variant="contained" sx={{ width: '90%', marginBottom: 2 }} onClick={() =>  navigate(`/user/${user.username}`, { state: { user: user } })}>Profile</Button>
                     <Button variant="contained" sx={{ width: '90%' }} onClick={() =>  navigate('/settings', { state: { user: user } })}>Settings</Button>
                 </Box>
             </Box>

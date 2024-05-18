@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 function UserProfile() {
     const navigate = useNavigate();
     const location = useLocation();
-    const user = location.state?.myVariable;
+    const user = location.state?.user;
     const sampleUserData = {
         username: user.username,
         level: user.level,

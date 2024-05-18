@@ -60,7 +60,7 @@ export default function LogInSignIn() {
               const user = await response1.json();
 
             setTimeout(() => {
-                navigate('/admin', { state: { myVariable: user } });
+                navigate('/admin', { state: { user: user } });
             }, 1000);
         }
     else  if(reponse==1){
@@ -77,7 +77,7 @@ export default function LogInSignIn() {
           const user = await response1.json();
 
         setTimeout(() => {
-            navigate('/home', { state: { myVariable: user } });
+            navigate('/home', { state: { user: user } });
         }, 1000);
     }
     else{
