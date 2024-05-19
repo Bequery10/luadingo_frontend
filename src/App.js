@@ -1,8 +1,8 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route , Navigate ,useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// Make sure all these imports are correct and that these files exist in your project under the specified paths
+// Import all necessary components
 import AdminPage from './components/AdminPage';
 import UserListPage from './components/UserListPage';
 import RunSqlCommandsPage from './components/RunSqlCommandsPage';
@@ -18,7 +18,8 @@ import QuestionsPage from './components/QuestionsPage';
 import FriendsForFriends from './components/FriendsForFriends';
 import FriendsAccountsPage from './components/FriendsAccountsPage';
 import UserProfileForFriends from './components/UserProfileForFriends';
-
+import UserAccountPage from './components/UserAccountPage';
+import AttemptPage from './components/AttemptPage';
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
           <Route path="/user/:username" element={<UserProfile />} />
           <Route path="/friends" element={<FriendsPage />} />
           <Route path="/userProfileForFriends" element={<UserProfileForFriends />} />
-          <Route path="/friendsAccounts" element={<FriendsAccountsPage />} />
+          <Route path="/friendsAccounts/:username" element={<FriendsAccountsPage />} />
           <Route path="/friendsForFriends" element={<FriendsForFriends />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/courses" element={<CoursesPage />} />
@@ -40,6 +41,8 @@ function App() {
           <Route path="/questions" element={<QuestionsPage />} />
           <Route path="/user-list" element={<UserListPage />} />
           <Route path="/sql-commands" element={<RunSqlCommandsPage />} />
+          <Route path="/user-account/:username" element={<UserAccountPage />} />
+          <Route path="/attempts/:username" element={<AttemptPage />} />
         </Routes>
       </div>
     </Router>
