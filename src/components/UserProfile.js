@@ -1,50 +1,46 @@
-import React, { useState, useEffect } from 'react'; // Import useState and useEffect
+import React, { useState, useEffect } from 'react';
 import { Button, Box, Typography, Paper } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 function UserProfile() {
-   
     const navigate = useNavigate();
     const location = useLocation();
     const user = location.state?.user;
 
-    
- const [badges, setbadges] = useState([]);
+    const [badges, setbadges] = useState([]);
 
- async function fetchbadges() {
-   try {
-     const response = await fetch(`http://localhost:8080/Has_Badge/getBadges/${user.username}`,{
-       method:"GET",
-       headers:{"Content-Type":"application/json"},
-     });
+    async function fetchbadges() {
+        try {
+            const response = await fetch(`http://localhost:8080/Has_Badge/getBadges/${user.username}`,{
+                method:"GET",
+                headers:{"Content-Type":"application/json"},
+            });
 
-     if (!response.ok) {
-       throw new Error(`HTTP error! status: ${response.status}`);
-     }
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
-     const badges = await response.json();
-     return badges;
-   } catch (error) {
-     console.error('An error occurred while fetching the badges:', error);
-   }
- }
+            const badges = await response.json();
+            return badges;
+        } catch (error) {
+            console.error('An error occurred while fetching the badges:', error);
+        }
+    }
 
- useEffect(() => {
-   async function getbadges() {
-     const fetchedbadges = await fetchbadges();
-     setbadges(fetchedbadges);
-   }
+    useEffect(() => {
+        async function getbadges() {
+            const fetchedbadges = await fetchbadges();
+            setbadges(fetchedbadges);
+        }
 
-   getbadges();
- }, []);
+        getbadges();
+    }, []);
     
     const sampleUserData = {
         username: user.username,
         level: user.level,
         badges: badges
     };
-
-
 
     return (
         <Box sx={{ padding: 2 }}>
@@ -61,7 +57,7 @@ function UserProfile() {
             <Typography variant="h6">Badges:</Typography>
             <Paper variant="outlined" sx={{ padding: 2, display: 'flex', justifyContent: 'space-around' }}>
                 {sampleUserData.badges.map(badge => (
-                    <Typography key={badge}>{badge}</Typography>
+                    <img key={badge.badge_id} src={badge.badge_image_url} alt={badge.badge_name} />
                 ))}
             </Paper>
         </Box>
