@@ -7,7 +7,8 @@ function CoursesPage() {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const user = useLocation.state?.user;
+    const location=useLocation();
+    const user = location.state?.user;
     useEffect(() => {
         const fetchCourses = async () => {
             try {
@@ -35,7 +36,6 @@ function CoursesPage() {
 
     if (loading) return <Typography>Loading...</Typography>;
     if (error) return <Typography>Error: {error}</Typography>;
-
     return (
         <Box sx={{ padding: 2 }}>
             <Typography variant='h4' sx={{ marginBottom: 2 }}>Courses</Typography>

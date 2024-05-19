@@ -8,8 +8,10 @@ function QuizzesPage() {
     const [quizzes, setQuizzes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const user = useLocation.state?.user;
-    const course = useLocation.state?.course;
+    const location = useLocation();
+    const user = location.state?.user;
+    const location1 = useLocation();
+    const course = location1.state?.course;
 
     useEffect(() => {
         const fetchQuizzes = async () => {
@@ -53,9 +55,9 @@ function QuizzesPage() {
                     <TableBody>
                         {quizzes.map((quiz) => (
                             <TableRow key={quiz.quiz_id}>
-                                <TableCell>{quiz.quiz_title}</TableCell>
+                                <TableCell>{quiz.quiz_id}</TableCell>
                                 <TableCell align='right'>
-                                    <Button variant='contained' onClick={() => navigate('/questions', { state: { user: user, quiz: quiz} })}>Start Quiz</Button>
+                                    <Button variant='contained' onClick={() => navigate('/questions', { state: { user: user,course:course, quiz: quiz} })}>Start Quiz</Button>
                                 </TableCell>
                             </TableRow>
                         ))}

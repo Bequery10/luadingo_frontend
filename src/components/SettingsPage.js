@@ -7,7 +7,7 @@ function SettingsPage() {
     const [newPassword, setNewPassword] = useState('');
     const navigate = useNavigate();
     const location = useLocation();
-    const user = useLocation.state?.user;
+    const user = location.state?.user;
 
     const handleUsernameChange = (e) => {
         e.preventDefault()
