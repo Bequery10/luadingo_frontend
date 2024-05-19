@@ -1,21 +1,23 @@
 import React from 'react';
 import { Button, Box, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // Correct import
+import { useNavigate, useLocation } from 'react-router-dom';  // Make sure to import useLocation if you are using it
 
 function AdminPage() {
-    const navigate = useNavigate(); // Utilizing useNavigate for routing
+    const navigate = useNavigate();
+    const location = useLocation();
+    const user = location.state?.user;
 
     const handleLogout = () => {
         console.log('Logging out...');
-        navigate('/login'); // Navigates to login page upon logout
+        navigate('/');  // Navigate to the root path if that's your login page
     };
 
     const manageUsers = () => {
-        navigate('/user-list'); // Navigates to user management page
+        navigate('/user-list');
     };
 
     const runSqlCommands = () => {
-        navigate('/sql-commands'); // Navigates to SQL commands page
+        navigate('/sql-commands');
     };
 
     return (
