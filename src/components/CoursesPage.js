@@ -52,7 +52,7 @@ function CoursesPage() {
                             <TableRow key={course.course_id}>
                                 <TableCell>{course.course_name}</TableCell>
                                 <TableCell align='right'>
-                                    <Button variant='contained' onClick={() => navigate('/quizzes', { state: {user:user,course: course } })}>View Quizzes</Button>
+                                    <Button variant='contained' onClick={() => navigate('/quizzes', { state: {user:user,course:course } })}>View Quizzes</Button>
                                 </TableCell>
                             </TableRow>
                         ))}

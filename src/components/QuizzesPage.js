@@ -9,10 +9,12 @@ function QuizzesPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const user = useLocation.state?.user;
+    const course = useLocation.state?.course;
+
     useEffect(() => {
         const fetchQuizzes = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/quizzes/${courseId}`, {
+                const response = await fetch(`http://localhost:8080/Has_Quiz/quizzes/${course.course_id}`, {
                     method: "GET",
                     headers: {"Content-Type": "application/json"},
                 });
