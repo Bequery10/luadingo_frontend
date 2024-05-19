@@ -99,7 +99,7 @@ if (course && questionsWithOptions) {
         }
         
     const saveAttempt = async () => {
-        const attemptResponse = await fetch(`http://localhost:8080/Attempt/add/${user.username}/${quiz.quiz_id}`, {
+        const attemptResponse = await fetch(`http://localhost:8080/Attempt/add/${user.username}/${course.course_id}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(attempt)

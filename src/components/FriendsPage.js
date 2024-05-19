@@ -45,6 +45,7 @@ function FriendsPage() {
     const [fRequests, setfRequests] = useState([]);
 
  async function fetchfRequests() {
+
    try {
      const response = await fetch(`http://localhost:8080/Friends_With/requests/${user.username}`,{
        method:"GET",
@@ -76,6 +77,7 @@ function FriendsPage() {
 
 
  async function handleAccept(username) {
+  console.log(`ARE WE FETHCING--------------${user.username}   ${username}`);
   try {
       const response = await fetch(`http://localhost:8080/Friends_With/accept/${user.username}/${username}`, {
           method: "PUT",
@@ -111,6 +113,23 @@ function FriendsPage() {
       }
     }
 
+    async function handleRemove(friendUsername) {
+      try {
+          const response = await fetch(`http://localhost:8080/Friends_With/delete/${user.username}/${friendUsername}`, {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+          });
+          if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          // Update the friends state by removing the removed friend
+          setfriends((prevFriends) => prevFriends.filter((friend) => friend.username !== friendUsername));
+      } catch (error) {
+          console.error('An error occurred while removing the friend:', error);
+      }
+  }
+
+
     // useEffect(() => {
     //   async function getFriends() {
     //     const fetchedFriends = await fetchFriends();
@@ -132,33 +151,34 @@ function FriendsPage() {
         </Box>
         <Typography variant="h4" sx={{ marginBottom: 2 }}>Friends</Typography>
         <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Friend's Username</TableCell>
-                <TableCell align="right">Profile</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {friends.map((friend,index1) => (
-                <TableRow key={index1}>
-                  <TableCell>{friend.username}</TableCell>
-                  <TableCell align="right">
-                    <Button variant="contained" onClick={() => navigate(`/user/${friend.username}`, { state: { mainUser: user,user: friend } })}>View Profile</Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Friend's Username</TableCell>
+                            <TableCell align="right">Actions</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {friends.map((friend,index1) => (
+                            <TableRow key={index1}>
+                                <TableCell>{friend.username}</TableCell>
+                                <TableCell align="right">
+                                    <Button variant="contained" onClick={() => navigate(`/user/${friend.username}`, { state: { mainUser: user,user: friend } })}>View Profile</Button>
+                                    <Button variant="contained" onClick={() => handleRemove(friend.username)}>Remove</Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         <Modal open={open} onClose={() => setOpen(false)}>
           <Box sx={{ padding: 2 }}>
             <Typography variant="h4" sx={{ marginBottom: 2 }}>Friend Requests</Typography>
             {fRequests.map((request, index) => (
               <Box key={index}>
                 <Typography>{`\n${request.username1}`}</Typography>
-                <Button variant="contained" onClick={() => handleAccept(request.username)}>Accept</Button>
-                <Button variant="contained" onClick={() => handleDeny(request.username)}>Deny</Button>
+                <Button variant="contained" onClick={() => handleAccept(`${request.username1}`)}>Accept</Button>
+                <Button variant="contained" onClick={() => handleDeny(`${request.username1}`)}>Deny</Button>
               </Box>
             ))}
           </Box>
