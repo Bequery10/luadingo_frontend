@@ -1,33 +1,47 @@
 import React, { useState } from 'react';
 import { Button, Box, TextField, Typography, Paper } from '@mui/material';
-import { useNavigate , useLocation} from 'react-router-dom'; // Ensure this is correctly imported
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function RunSqlCommandsPage() {
     const location = useLocation();
-    const user = location.state?.myVariable;
-    const navigate = useNavigate(); // Correct use of useNavigate
+    const user = location.state?.user;
+    const navigate = useNavigate();
     const [sqlCommand, setSqlCommand] = useState('');
     const [results, setResults] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    // Simulate running an SQL command
-    const handleRunSqlCommand = () => {
-        fetch('http://localhost:8080/user/code', {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(sqlCommand)
-        })
-            .then(response => response.json())
-            .then(data => {
-            // Process the data and update the results state
-            setResults(data);
-            console.log(data);
-            })
-            .catch(error => {
-            // Handle any errors
-            console.error('Error:', error);
+    async function fetchSqlCommand(sql) {
+        try {
+            const response = await fetch(`http://localhost:8080/run-sql-command`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ sql }),
             });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error('An error occurred while running the SQL command:', error);
+            return { error: error.message };
+        }
+    }
+
+    const handleRunSqlCommand = async () => {
+        setLoading(true);
+        setError(null);
+        const result = await fetchSqlCommand(sqlCommand);
+        if (result.error) {
+            setError(result.error);
+            setResults('');
+        } else {
+            setResults(JSON.stringify(result.result, null, 2));
+        }
+        setLoading(false);
     };
 
     return (
@@ -46,8 +60,8 @@ function RunSqlCommandsPage() {
                     onChange={(e) => setSqlCommand(e.target.value)}
                     variant="outlined"
                 />
-                <Button variant="contained" sx={{ marginTop: 2 }} onClick={handleRunSqlCommand}>
-                    Execute
+                <Button variant="contained" sx={{ marginTop: 2 }} onClick={handleRunSqlCommand} disabled={loading}>
+                    {loading ? 'Executing...' : 'Execute'}
                 </Button>
             </Paper>
             <Paper elevation={2} sx={{ padding: 2 }}>
@@ -62,6 +76,7 @@ function RunSqlCommandsPage() {
                     variant="outlined"
                     placeholder="Results will appear here"
                 />
+                {error && <Typography color="error">Error: {error}</Typography>}
             </Paper>
         </Box>
     );
