@@ -16,12 +16,13 @@ function RunSqlCommandsPage() {
             headers: {
             'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ sqlCommand })
+            body: JSON.stringify({sqlCommand})
         })
             .then(response => response.json())
             .then(data => {
             // Process the data and update the results state
             setResults(data);
+            console.log(data);
             })
             .catch(error => {
             // Handle any errors
