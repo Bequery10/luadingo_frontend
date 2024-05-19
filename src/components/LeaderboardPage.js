@@ -10,7 +10,7 @@ function LeaderboardPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-
+    
     async function fetchusers1() {
         try {
           const response = await fetch(`http://localhost:8080/user/sort/badge`,{
@@ -38,6 +38,7 @@ function LeaderboardPage() {
   
       getusers1();
     }, []);
+    
 
     // const usersWithIndices = users1.map((user, index) => {
     //     return { index, ...user };
@@ -49,7 +50,7 @@ function LeaderboardPage() {
     return (
         <Box sx={{ padding: 2 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
-                <Button variant="contained" onClick={() => navigate(-1, { state: { myVariable: user } })}>Back</Button>
+                <Button variant="contained" onClick={() => navigate(-1, { state: { user: user } })}>Back</Button>
                 <Typography variant="h4" sx={{ flexGrow: 1, textAlign: 'center' }}>Leader Board</Typography>
                 <Box sx={{ width: 48 }} />  {/* Placeholder for spacing */}
             </Box>
@@ -70,7 +71,7 @@ function LeaderboardPage() {
                                 <TableCell>{row.username}</TableCell>
                                 <TableCell>{row.level}</TableCell>
                                 <TableCell>
-                                    <Button onClick={() => navigate(`/friendsAccounts`, { state: { user: row} })}>See Profile</Button>
+                                    <Button onClick={() => navigate(`/userProfileForFriends`, { state: { mainUser: user,user: row} })}>See Profile</Button>
                                 </TableCell>
                             </TableRow>
                         ))}

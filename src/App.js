@@ -17,6 +17,7 @@ import QuizzesPage from './components/QuizzesPage';
 import QuestionsPage from './components/QuestionsPage';
 import FriendsForFriends from './components/FriendsForFriends';
 import FriendsAccountsPage from './components/FriendsAccountsPage';
+import UserProfileForFriends from './components/UserProfileForFriends';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <Route path="/leaderboard" element={<LeaderboardPage />} />
           <Route path="/user/:username" element={<UserProfile />} />
           <Route path="/friends" element={<FriendsPage />} />
+          <Route path="/userProfileForFriends" element={<UserProfileForFriends />} />
           <Route path="/friendsAccounts" element={<FriendsAccountsPage />} />
           <Route path="/friendsForFriends" element={<FriendsForFriends />} />
           <Route path="/settings" element={<SettingsPage />} />

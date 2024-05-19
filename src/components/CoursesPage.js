@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 
 function CoursesPage() {
     const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-
+    const user = useLocation.state?.user;
     useEffect(() => {
         const fetchCourses = async () => {
             try {
@@ -52,7 +52,7 @@ function CoursesPage() {
                             <TableRow key={course.course_id}>
                                 <TableCell>{course.course_name}</TableCell>
                                 <TableCell align='right'>
-                                    <Button variant='contained' onClick={() => navigate('/quizzes', { state: { courseID: course.course_id } })}>View Quizzes</Button>
+                                    <Button variant='contained' onClick={() => navigate('/quizzes', { state: {user:user,course: course } })}>View Quizzes</Button>
                                 </TableCell>
                             </TableRow>
                         ))}

@@ -27,7 +27,7 @@ export default function LogInSignIn() {
           }).then(() => {
             alert("you're signed up!");
             setTimeout(() => {
-              navigate('/');
+                window.location.reload();
             }, 200);
           });
         } catch (e) {

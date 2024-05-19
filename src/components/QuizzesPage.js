@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 
 function QuizzesPage() {
     const { courseId } = useParams();
@@ -8,7 +8,7 @@ function QuizzesPage() {
     const [quizzes, setQuizzes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-
+    const user = useLocation.state?.user;
     useEffect(() => {
         const fetchQuizzes = async () => {
             try {
@@ -53,7 +53,7 @@ function QuizzesPage() {
                             <TableRow key={quiz.quiz_id}>
                                 <TableCell>{quiz.quiz_title}</TableCell>
                                 <TableCell align='right'>
-                                    <Button variant='contained' onClick={() => navigate('/questions', { state: { quiz_id: quiz.quiz_id } })}>Start Quiz</Button>
+                                    <Button variant='contained' onClick={() => navigate('/questions', { state: { user: user, quiz: quiz} })}>Start Quiz</Button>
                                 </TableCell>
                             </TableRow>
                         ))}
