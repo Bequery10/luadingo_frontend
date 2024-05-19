@@ -11,9 +11,22 @@ function RunSqlCommandsPage() {
 
     // Simulate running an SQL command
     const handleRunSqlCommand = () => {
-        console.log('Running SQL Command:', sqlCommand);
-        // Simulate result; replace this with your actual API call
-        setResults(`Results of: ${sqlCommand}`);
+        fetch('http://localhost:8080/user/code', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ sqlCommand })
+        })
+            .then(response => response.json())
+            .then(data => {
+            // Process the data and update the results state
+            setResults(data);
+            })
+            .catch(error => {
+            // Handle any errors
+            console.error('Error:', error);
+            });
     };
 
     return (
