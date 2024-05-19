@@ -16,7 +16,7 @@ function RunSqlCommandsPage() {
             headers: {
             'Content-Type': 'application/json'
             },
-            body: JSON.stringify({sqlCommand})
+            body: JSON.stringify(sqlCommand)
         })
             .then(response => response.json())
             .then(data => {
