@@ -11,32 +11,32 @@ function UserProfileForFriends() {
 
     const [badges, setbadges] = useState([]);
 
- async function fetchbadges() {
-   try {
-     const response = await fetch(`http://localhost:8080/Has_Badge/getBadges/${user.username}`,{
-       method:"GET",
-       headers:{"Content-Type":"application/json"},
-     });
+    async function fetchbadges() {
+      try {
+          const response = await fetch(`http://localhost:8080/Has_Badge/getBadges/${user.username}`,{
+              method:"GET",
+              headers:{"Content-Type":"application/json"},
+          });
 
-     if (!response.ok) {
-       throw new Error(`HTTP error! status: ${response.status}`);
-     }
+          if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+          }
 
-     const badges = await response.json();
-     return badges;
-   } catch (error) {
-     console.error('An error occurred while fetching the badges:', error);
-   }
- }
+          const badges = await response.json();
+          return badges;
+      } catch (error) {
+          console.error('An error occurred while fetching the badges:', error);
+      }
+  }
 
- useEffect(() => {
-   async function getbadges() {
-     const fetchedbadges = await fetchbadges();
-     setbadges(fetchedbadges);
-   }
+  useEffect(() => {
+      async function getbadges() {
+          const fetchedbadges = await fetchbadges();
+          setbadges(fetchedbadges);
+      }
 
-   getbadges();
- }, []);
+      getbadges();
+  }, []);
 
     const sampleUserData = {
         username: user.username,
@@ -83,7 +83,7 @@ function UserProfileForFriends() {
             <Typography variant="h6">Badges:</Typography>
             <Paper variant="outlined" sx={{ padding: 2, display: 'flex', justifyContent: 'space-around' }}>
                 {sampleUserData.badges.map(badge => (
-                    <Typography key={badge}>{badge}</Typography>
+                    <img key={badge.badge_id} src={badge.badge_image_url} alt={badge.badge_name} />
                 ))}
             </Paper>
         </Box>
